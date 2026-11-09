@@ -1,20 +1,19 @@
-package com.cashflux.transactions.entity;
+package com.cashflux.budget.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "transactions")
-public class Transactions {
+@Table(name = "budgets")
+public class Budget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,17 +22,17 @@ public class Transactions {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(nullable = false, length = 10)
-    private String type;
+    @Column(name = "category_id")
+    private Long categoryId;
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
-    @Column(length = 255)
-    private String description;
+    @Column(nullable = false)
+    private Short month;
 
-    @Column(name = "transaction_date", nullable = false)
-    private LocalDate transactionDate;
+    @Column(nullable = false)
+    private Short year;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
