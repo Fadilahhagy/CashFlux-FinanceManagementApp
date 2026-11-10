@@ -48,3 +48,10 @@ application-local.properties
 ### OS ###
 .DS_Store
 Thumbs.db
+
+# IDE
+.run/
+
+# Postman
+.postman/
+postman/

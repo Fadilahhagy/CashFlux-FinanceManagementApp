@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 public class RegisterRequest {
 
-    @NotBlank(message = "Full name is Required")
+    @NotBlank(message = "Full name is required")
     @Size(max = 100, message = "Full name must not exceed 100 characters")
     private String fullName;
 
-    @NotBlank(message = "Email is Required")
+    @NotBlank(message = "Email is required")
     @Email(message = "Email format is invalid")
     @Size(max = 150, message = "Email must not exceed 150 characters")
     private String email;

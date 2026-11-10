@@ -35,7 +35,7 @@ public class UserService {
 
         // Check whether email already exists
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email is already registered");
+            throw new DuplicateResourceException("Email is already registered");
         }
 
         // Create new user
@@ -95,7 +95,7 @@ public class UserService {
                 request.getEmail(),
                 userId
         )) {
-            throw new IllegalArgumentException("Email is already registered");
+            throw new DuplicateResourceException("Email is already registered");
         }
 
         user.setFullName(request.getFullName());
