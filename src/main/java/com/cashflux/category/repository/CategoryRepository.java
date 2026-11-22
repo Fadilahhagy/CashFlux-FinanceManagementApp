@@ -12,7 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Category> findByIdAndUserId(Long id, Long userId);
 
-    boolean existsByUserIdAndType(
+    boolean existsByUserIdAndNameAndType(
             Long userId,
             String name,
             String type
