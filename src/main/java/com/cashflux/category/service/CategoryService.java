@@ -74,4 +74,43 @@ public class CategoryService {
                 category.getCreatedAt()
         );
     }
+
+
+    @Transactional
+    public CategoryResponse updateCategory(
+            Long userId,
+            Long categoryId,
+            CategoryRequest request
+    ) {
+        Category category = categoryRepository
+                .findByIdAndUserId(categoryId, userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Category not found")
+                );
+
+        boolean duplicateExists =
+                categoryRepository.existsByUserIdAndNameAndType(
+                        userId,
+                        request.getName(),
+                        request.getType()
+                );
+
+        if (duplicateExists
+                && (!category.getName().equals(request.getName())
+                || !category.getType().equals(request.getType()))) {
+
+            throw new DuplicateResourceException(
+                    "Category already exists"
+            );
+        }
+
+        category.setName(request.getName());
+        category.setType(request.getType());
+        category.setUpdatedAt(OffsetDateTime.now());
+
+        Category updatedCategory = categoryRepository.save(category);
+
+        return mapToResponse(updatedCategory);
+    }
+
 }

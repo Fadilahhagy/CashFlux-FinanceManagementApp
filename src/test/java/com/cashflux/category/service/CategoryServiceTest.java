@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.cashflux.common.exception.ResourceNotFoundException;
+import com.cashflux.common.exception.DuplicateResourceException;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -69,7 +71,7 @@ class CategoryServiceTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(
-                RuntimeException.class,
+                ResourceNotFoundException.class,
                 () -> categoryService.getCategoryById(20L, 1L)
         );
     }
@@ -101,6 +103,26 @@ class CategoryServiceTest {
                         && category.getCreatedAt() != null
                         && category.getUpdatedAt() != null
         ));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCategoryAlreadyExists() {
+        CategoryRequest request = new CategoryRequest();
+        request.setName("Food");
+        request.setType("EXPENSE");
+
+        when(categoryRepository.existsByUserIdAndNameAndType(
+                10L,
+                "Food",
+                "EXPENSE"
+        )).thenReturn(true);
+
+        assertThrows(
+                DuplicateResourceException.class,
+                () -> categoryService.createCategory(10L, request)
+        );
+
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 
     private Category createCategory(
