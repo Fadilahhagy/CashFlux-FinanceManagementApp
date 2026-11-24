@@ -1,14 +1,16 @@
-
 package com.cashflux.user.controller;
 
+import jakarta.validation.Valid;
 import com.cashflux.user.dto.UserResponse;
 import com.cashflux.user.service.UserService;
+import com.cashflux.user.dto.UpdateProfileRequest;
+import com.cashflux.user.dto.ChangePasswordRequest;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.cashflux.user.dto.UpdateProfileRequest;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -44,4 +46,17 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> changePassword(
+            Authentication authentication,
+            @Valid @RequestBody ChangePasswordRequest request
+    ) {
+        Long userId = (Long) authentication.getPrincipal();
+
+        userService.changePassword(userId, request);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

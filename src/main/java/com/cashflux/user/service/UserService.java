@@ -135,7 +135,7 @@ public class UserService {
                 request.getCurrentPassword(),
                 user.getPasswordHash()
         )) {
-            throw new IllegalArgumentException("Current password is incorrect");
+            throw new BadRequestException("Current password is incorrect");
         }
 
         // Prevent using the same password
@@ -143,7 +143,7 @@ public class UserService {
                 request.getNewPassword(),
                 user.getPasswordHash()
         )) {
-            throw new IllegalArgumentException(
+            throw new BadRequestException(
                     "New password must be different from current password"
             );
         }
